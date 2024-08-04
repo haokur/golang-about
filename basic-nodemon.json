@@ -1,0 +1,8 @@
+{
+    "watch": [
+        "basic/*.go"
+    ],
+    "quiet": true,
+    "ext": "go",
+    "exec": "sh -c 'cd basic && go run main.go'"
+}

@@ -1,0 +1,15 @@
+{
+  "name": "golang-about",
+  "version": "1.0.0",
+  "description": "golang测试",
+  "scripts": {
+    "start": "nodemon --config basic-nodemon.json",
+    "gin": "cd gin-serve && air"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}

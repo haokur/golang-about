@@ -16,7 +16,7 @@ func typeTest() {
 	var c = 1
 
 	d := 1
-	msg := "hello world"
+	msg := "hello world2"
 	fmt.Println(a, b, c, d, msg)
 }
 
