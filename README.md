@@ -129,6 +129,12 @@ npm start
 go install github.com/cosmtrek/air@latest
 ```
 
+或者直接安装到项目目录下使用：
+
+```sh
+curl -sSfL https://raw.githubusercontent.com/air-verse/air/master/install.sh | sh -s
+```
+
 2. 在 gin 服务目录下，初始化配置文件
 
 ```sh
