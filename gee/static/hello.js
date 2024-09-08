@@ -1,0 +1,1 @@
+console.log("hello javascript", "hello.js::1行");

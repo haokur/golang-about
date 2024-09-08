@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    {{.title}}
+    <ul>
+        {{ range .stuArr }}
+        <li>{{ .Name }}-{{ .Age }}</li>
+        {{ end }}
+    </ul>
+    <div>
+        <label for="">时间格式化：</label>
+        <span>{{ .now | FormatAsDate }}</span>
+    </div>
+    <script src="/assets/hello.js"></script>
+</body>
+
+</html>

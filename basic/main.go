@@ -144,6 +144,12 @@ func testMap() {
 	fmt.Println(m2, m2["NickName"], m2["Gender"])
 	m2["NickName"] = "bob"
 	fmt.Println(m2, m2["NickName"], m2["Gender"])
+
+	m3 := map[string]interface{}{
+		"Name": "jack",
+		"Age":  18,
+	}
+	fmt.Println(m3)
 }
 
 func add(num int) {

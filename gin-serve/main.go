@@ -28,6 +28,7 @@ func AuthRequired() gin.HandlerFunc {
 }
 
 func main() {
+	fmt.Println("serve is running on http://localhost:8080")
 	r := gin.Default()
 	// 路由方法有 GET,POST,PUT,PATCH,DELETE,OPTIONS,Any
 	r.GET("/", func(c *gin.Context) {
