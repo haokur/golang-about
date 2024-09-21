@@ -1,0 +1,20 @@
+{
+	"watchers": [
+		{
+			"extensions": [
+				".js"
+			],
+			"include": [
+				"/Users/haokur/code/Github/golang-about/watcher"
+			],
+			"exclude": [
+				"/Users/haokur/code/Github/golang-about/watcher/node_modules",
+				"/Users/haokur/code/Github/golang-about/watcher/dist",
+				"/Users/haokur/code/Github/golang-about/watcher/.git"
+			],
+			"cmds": [
+				"node main.js"
+			]
+		}
+	]
+}

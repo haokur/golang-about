@@ -4,7 +4,8 @@
   "description": "golang测试",
   "scripts": {
     "start": "nodemon --config basic-nodemon.json",
-    "gin": "cd gin-serve && air"
+    "gin": "cd gin-serve && air",
+    "build:watcher":"cd watcher && go build -o watcher main.go"
   },
   "keywords": [],
   "author": "",

@@ -156,3 +156,43 @@ cd gin-server && air init
 ```sh
 npm run gin
 ```
+
+### 使用 go 监听文件夹变化，变化后执行对应命令
+
+```sh
+# 打包watcher，根目录下运行
+npm run build:watcher
+
+# 将watcher复制到$PATH路径目录下面
+# 打开命令行执行
+watcher --config <绝对路径的配置文件>
+
+# 或让其自动生成
+watcher
+```
+
+自动生成的配置文件如下：
+
+```json
+{
+  "watchers": [
+    {
+      "include": ["/Users/xxxxx/golang-about/watcher"],
+      "exclude": [
+        "/Users/xxxxx/golang-about/watcher/node_modules",
+        "/Users/xxxxx/golang-about/watcher/dist",
+        "/Users/xxxxx/golang-about/watcher/.git"
+      ],
+      "cmds": ["npm start"]
+    }
+  ]
+}
+```
+
+配置文件说明：
+
+- watchers，监听对象，可同时存在多个
+  - include，要监听的目录或文件
+  - exclude，忽略监听的目录或文件
+  - cmds，要运行的命令，可多个
+  - extensions，字符串数组，只监听的后缀名如：[".js",".ts"]
