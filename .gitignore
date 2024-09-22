@@ -3,3 +3,5 @@ node_modules/*
 gin-serve/tmp
 gee/tmp
 */tmp
+tmp/*
+*/tmp/*

@@ -13,6 +13,7 @@ type inputModel struct {
 	label        string
 	defaultValue string
 	value        string
+	isCanceled   bool // 是否取消
 }
 
 func initialInputModel(label string, defaultValue string) inputModel {
@@ -51,6 +52,7 @@ func (m inputModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		// 退出
 		case "ctrl+c":
+			m.isCanceled = true
 			return m, tea.Quit
 
 		default:
@@ -63,6 +65,9 @@ func (m inputModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m inputModel) View() string {
+	if m.isCanceled {
+		return fmt.Sprintf("%s: %s\n", m.label, "操作已取消")
+	}
 	if m.confirmed {
 		return fmt.Sprintf("%s: %s\n", m.label, m.textInput.Value())
 	}

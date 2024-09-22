@@ -11,7 +11,7 @@ func TestCmd(t *testing.T) {
 
 	// 多选select
 	stylelintOptions := []string{"eslint", "typescript", "prettier"}
-	stylelint, _ := cmd.Check("请选择你喜欢的选项", &stylelintOptions, true)
+	stylelint, _, _ := cmd.Check("请选择你喜欢的选项", &stylelintOptions, true)
 
 	// 单选radio
 	webFrameOptions := []string{"Vue3", "React", "Angular"}

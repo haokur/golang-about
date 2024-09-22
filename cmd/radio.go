@@ -8,10 +8,11 @@ import (
 
 // 模型定义
 type radioModel struct {
-	cursor   int      // 当前选中的索引
-	label    string   // 标题标签
-	choices  []string // 可选项
-	selected string   // 最终选择的项
+	cursor     int      // 当前选中的索引
+	label      string   // 标题标签
+	choices    []string // 可选项
+	selected   string   // 最终选择的项
+	isCanceled bool     // 是否取消
 }
 
 func (m radioModel) Init() tea.Cmd {
@@ -51,6 +52,7 @@ func (m radioModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		// 退出
 		case "ctrl+c", "q":
+			m.isCanceled = true
 			return m, tea.Quit
 		}
 
@@ -60,6 +62,9 @@ func (m radioModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 // 渲染函数
 func (m radioModel) View() string {
+	if m.isCanceled {
+		return fmt.Sprintf("%s: %s\n", m.label, "操作已取消")
+	}
 	s := m.label + "（使用上下键导航，按回车确认选择）：\n\n"
 
 	// 列出所有选项

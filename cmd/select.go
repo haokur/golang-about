@@ -15,6 +15,7 @@ type selectModel struct {
 	checked     map[int]bool // 保存已选择的选项
 	done        bool         // 用户是否完成选择
 	allSelected bool         // 标记是否全选
+	isCanceled  bool         // 是否取消
 }
 
 func initialSelectModel(label string, options *[]string, emptyEnable bool) selectModel {
@@ -81,6 +82,7 @@ func (m selectModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		// 退出
 		case "ctrl+c", "q":
+			m.isCanceled = true
 			return m, tea.Quit
 		}
 	}
@@ -101,6 +103,10 @@ func (m selectModel) SelectedChoices() string {
 }
 
 func (m selectModel) View() string {
+	if m.isCanceled {
+		return fmt.Sprintf("%s: %s\n", m.label, "操作已取消")
+	}
+
 	if m.done {
 		// 完成选择时显示结果
 		return m.SelectedChoices()
@@ -132,17 +138,19 @@ func (m selectModel) View() string {
 }
 
 // 多选
-func Check(label string, options *[]string, emptyEnable bool) ([]string, error) {
+func Check(label string, options *[]string, emptyEnable bool) ([]string, []int, error) {
 	p := tea.NewProgram(initialSelectModel(label, options, emptyEnable))
 	allChoice := []string{}
+	allChoiceIndex := []int{}
 	result, err := p.Run()
 	if err != nil {
-		return allChoice, err
+		return allChoice, []int{}, err
 	}
 	for i, choice := range result.(selectModel).choices {
 		if result.(selectModel).checked[i] {
 			allChoice = append(allChoice, choice)
+			allChoiceIndex = append(allChoiceIndex, i)
 		}
 	}
-	return allChoice, nil
+	return allChoice, allChoiceIndex, nil
 }

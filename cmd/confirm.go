@@ -14,6 +14,7 @@ type confirmModel struct {
 	answer        string
 	defaultAnswer string
 	confirmed     bool
+	isCanceled    bool // 是否取消
 }
 
 func initialConfirmModel(label string, defaultAnswer bool) confirmModel {
@@ -69,6 +70,7 @@ func (m confirmModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		// 退出
 		case "ctrl+c", "q":
+			m.isCanceled = true
 			return m, tea.Quit
 
 		default:
@@ -81,6 +83,10 @@ func (m confirmModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m confirmModel) View() string {
+	if m.isCanceled {
+		return fmt.Sprintf("%s: %s\n", m.label, "操作已取消")
+	}
+
 	if m.confirmed {
 		answerStr := m.answer
 		if (m.defaultAnswer == "Y" && answerStr == "y") || (m.defaultAnswer == "N" && answerStr == "n") {
