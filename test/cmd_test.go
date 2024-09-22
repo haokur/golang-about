@@ -1,11 +1,11 @@
 package main
 
 import (
-	"fmt"
 	"mainmodule/cmd"
+	"testing"
 )
 
-func main() {
+func TestCmd(t *testing.T) {
 	// input答案
 	projectName, _ := cmd.Input("请输入项目名", "my-project")
 
@@ -20,10 +20,14 @@ func main() {
 	// yes or no => confirm
 	installAuto, _ := cmd.Confirm("是否自动执行npm install安装依赖", true)
 
-	fmt.Println(map[string]interface{}{
+	resultMap := map[string]interface{}{
 		"projectName": projectName,
 		"lintRules":   stylelint,
 		"webFrame":    webFrame,
 		"installAuto": installAuto,
-	})
+	}
+
+	if resultMap["projectName"] == "" {
+		t.Errorf("cmd.Input is fail")
+	}
 }
