@@ -106,7 +106,6 @@ func BackupUnCommitFiles(sourceDir string, targetDir string) {
 // 4.展示选择备份目录下所有文件，且显示更改时间，文件大小，用户选择要还原的文件
 // 5.将用户选择的文件，还原到git项目目录
 func RecoverBackupFiles(backupDir string, gitProjectDir string) {
-	fmt.Println(backupDir, gitProjectDir)
 	backupItemList, err := os.ReadDir(backupDir)
 	if err != nil {
 		fmt.Println("读取备份目录目录时出错", err)
@@ -125,16 +124,10 @@ func RecoverBackupFiles(backupDir string, gitProjectDir string) {
 		return dirs[i] > dirs[j] // 倒序排列
 	})
 
-	// 输出排序后的文件夹名称
-	for _, dir := range dirs {
-		fmt.Println(dir)
-	}
-
 	userSelectBackupDir, err := cmd.Radio("请选择一个文件夹进行还原", &dirs)
 	if err != nil {
 		fmt.Println("用户选择目录出错", err)
 	}
-	fmt.Println(userSelectBackupDir)
 	backupDir2Recover := filepath.Join(backupDir, userSelectBackupDir)
 	allFilePaths, err := ReadFilesRecursively(backupDir2Recover)
 	if err != nil {
@@ -147,10 +140,10 @@ func RecoverBackupFiles(backupDir string, gitProjectDir string) {
 	}
 	// 将用户选择的还原到git项目目录
 	for _, recoverFilePath := range userSelectFiles {
-		fmt.Println(recoverFilePath)
-		copyFile(
-			filepath.Join(backupDir2Recover, recoverFilePath),
-			filepath.Join(gitProjectDir, recoverFilePath),
-		)
+		source := filepath.Join(backupDir2Recover, recoverFilePath)
+		dest := filepath.Join(gitProjectDir, recoverFilePath)
+		fmt.Printf("Backing up: %s -> %s\n", source, dest)
+		copyFile(source, dest)
 	}
+	fmt.Println("recover successfully!")
 }
