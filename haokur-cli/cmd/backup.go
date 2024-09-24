@@ -13,19 +13,33 @@ var backupCmd = &cobra.Command{
 	Use:   "backup",
 	Short: "backup unCommit files",
 	Run: func(cmd *cobra.Command, args []string) {
-		currentWorkDir, err := tools.GetGitRootDir()
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-		fileName := filepath.Base(currentWorkDir)
 		userHomeDir, err := os.UserHomeDir()
+		currentWorkGitDir, err := tools.GetGitRootDir()
 		if err != nil {
+			fmt.Println("获取git根目录失败", err)
 			return
 		}
-		backupTargetDir := fmt.Sprintf("%s/%s", userHomeDir, fileName)
+		action := args[0]
+		switch action {
+		// 恢复
+		case "recover":
+			// 1.找到匹配的备份目录
+			// 2.以时间戳按时间倒序，最近的备份显示在最前面，单选
+			// 3.用户选择一个备份目录，点击确认
+			// 4.展示选择备份目录下所有文件，且显示更改时间，文件大小，用户选择要还原的文件
+			// 5.将用户选择的文件，还原到git项目目录
+			fileName := filepath.Base(currentWorkGitDir)
+			gitBackupDir := fmt.Sprintf("%s/%s", userHomeDir, fileName)
+			tools.RecoverBackupFiles(gitBackupDir, currentWorkGitDir)
+		case "backup":
+			fileName := filepath.Base(currentWorkGitDir)
+			if err != nil {
+				return
+			}
+			backupTargetDir := fmt.Sprintf("%s/%s", userHomeDir, fileName)
 
-		tools.StartBackupUnCommitFiles(currentWorkDir, backupTargetDir)
+			tools.BackupUnCommitFiles(currentWorkGitDir, backupTargetDir)
+		}
 	},
 }
 

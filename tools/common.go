@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"strings"
 )
 
@@ -28,4 +29,37 @@ func GetGitRootDir() (string, error) {
 	// 去除输出中的换行符和空白
 	gitRootDir := strings.TrimSpace(string(out))
 	return gitRootDir, nil
+}
+
+func readDirRecursively(dirPath string, filePaths *[]string, rootPath string) error {
+	entries, err := os.ReadDir(dirPath)
+	if err != nil {
+		return err
+	}
+
+	// 遍历当前目录中的所有条目
+	for _, entry := range entries {
+		fullPath := filepath.Join(dirPath, entry.Name())
+
+		// 计算相对于 rootPath 的路径
+		relativePath, _ := filepath.Rel(rootPath, fullPath)
+
+		// 如果是目录，递归处理
+		if entry.IsDir() {
+			err := readDirRecursively(fullPath, filePaths, rootPath)
+			if err != nil {
+				return err
+			}
+		} else {
+			*filePaths = append(*filePaths, relativePath)
+		}
+	}
+	return nil
+}
+
+// 递归读取文件函数
+func ReadFilesRecursively(dirPath string) ([]string, error) {
+	result := []string{}
+	err := readDirRecursively(dirPath, &result, dirPath)
+	return result, err
 }
